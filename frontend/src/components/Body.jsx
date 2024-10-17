@@ -34,7 +34,9 @@ const Body = () => {
 
   return (
     <div className="flex flex-col h-screen">
+      <div className="flex justify-end">
       <Navbar />
+      </div>
       <div className="flex-grow">
         <Outlet />
       </div>
