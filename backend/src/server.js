@@ -12,6 +12,7 @@ const port = process.env.PORT || 3000;
 app.use(cors({
   origin: "https://devsync-frontend.onrender.com",
   credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
 }));
 app.use(express.json());
 app.use(cookieParser());
