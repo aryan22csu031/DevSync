@@ -6,33 +6,29 @@ const authRouter = express.Router();
 
 authRouter.post("/signup", async (req, res) => {
   try {
-    const { emailId } = req.body;
+    const { emailId, password } = req.body;
+
     User.validate(req.body);
-    const passHash = await bcrypt.hash(req.body.password, 10);
-    const user = await User.findOne({ emailId });
 
-    if (user) {
+    const existingUser = await User.findOne({ emailId });
+    if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
-    } else {
-      const newuser = new User(
-        {
-          ...req.body,
-          password: passHash,
-          _id: new mongoose.Types.ObjectId(),
-        },
-        {
-          runValidators: true,
-        }
-      );
-
-      await newuser.save();
-      res.status(201).send("user added");
     }
+
+    const passHash = await bcrypt.hash(password, 10);
+    const newUser = new User({
+      ...req.body,
+      password: passHash,
+      _id: new mongoose.Types.ObjectId(),
+    });
+
+    await newUser.save();
+    res.status(201).json({ message: "User added successfully" });
   } catch (err) {
-    console.log(err);
-    res.status(404).json({
+    console.error(err);
+    res.status(500).json({
       success: false,
-      message: "something went wrong",
+      message: "Something went wrong",
       error: err.message || err,
     });
   }
@@ -41,45 +37,56 @@ authRouter.post("/signup", async (req, res) => {
 authRouter.post("/login", async (req, res) => {
   try {
     const { emailId, password } = req.body;
+
     const user = await User.findOne({ emailId });
     if (!user) {
-      throw new Error("invalid email or password");
-    } else {
-      const isValid = await bcrypt.compare(password, user.password);
-      if (isValid) {
-        const token = await user.getJwt();
-        res.cookie("token", token);
-        res.status(200).json({
-          success: true,
-          message: "logged in successfully",
-          data: user
-        });
-      } else {
-        throw new Error("invalid email or password");
-      }
+      return res.status(401).json({ message: "Invalid email or password" });
     }
+
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    const token = await user.getJwt();
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "None",
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Logged in successfully",
+      data: user,
+    });
   } catch (err) {
-    res.status(404).json({
+    console.error(err);
+    res.status(500).json({
       success: false,
-      message: "something went wrong",
+      message: "Something went wrong",
       error: err.message || err,
     });
   }
 });
 
-authRouter.post("/logout", async (req, res) => {
+authRouter.post("/logout", (req, res) => {
   try {
-    res.cookie("token", null, {
-      expires: new Date(Date.now()),
+    res.cookie("token", "", {
+      expires: new Date(0),
+      httpOnly: true,
+      sameSite: "None",
     });
+
     res.status(200).json({
       success: true,
-      message: "logged out successfully",
+      message: "Logged out successfully",
     });
   } catch (err) {
-    res.status(404).json({
+    console.error(err);
+    res.status(500).json({
       success: false,
-      message: "something went wrong",
+      message: "Something went wrong",
       error: err.message || err,
     });
   }
