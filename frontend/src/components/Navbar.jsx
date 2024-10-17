@@ -22,15 +22,15 @@ const Navbar = () => {
   return (
     <>
       <div className="navbar bg-base-200">
-        <div className="flex-1">
+        <div className="flex-2 w-[34.5rem]">
           <Link to={"/"} className="btn btn-ghost text-xl">
             💻DevSync
           </Link>
         </div>
         {user && (
-          <div className="flex-none gap-2">
-            <div className="flex gap-3 items-center dropdown dropdown-end mr-4">
-              <p>welcome, {user.firstName} !</p>
+          <div className="flex">
+            <div className="flex gap-3 items-center dropdown dropdown-end">
+              <p>welcome, {user.firstName} :)</p>
               <div
                 tabIndex={0}
                 role="button"

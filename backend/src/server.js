@@ -10,7 +10,7 @@ const userRouter = require("./routes/userRoutes");
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(cors({
-  origin: "https://devsync-frontend-final.onrender.com",
+  origin: "http://localhost:5173",
   credentials: true,
 }));
 app.use(express.json());
