@@ -1,14 +1,13 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
-const { validate } = require("../models/User");
 const User = require("../models/User");
 const authRouter = express.Router();
 
 authRouter.post("/signup", async (req, res) => {
   try {
     const { emailId } = req.body;
-    // validate(req.body);
+    User.validate(req.body);
     const passHash = await bcrypt.hash(req.body.password, 10);
     const user = await User.findOne({ emailId });
 
