@@ -41,82 +41,107 @@ const EditProfileForm = () => {
 
       setTimeout(() => {
         dispatch(addUser(res.data.user));
-        toast.success("Profile updated successfully !");
-        return navigate("/");
+        toast.success("Profile updated successfully!");
+        navigate("/");
       }, 2000);
     } catch (err) {
-      toast.error("something went wrong");
-      console.log(err);
+      toast.error("Something went wrong");
+      console.error(err);
     }
   };
 
   return (
-    <div className="flex justify-around p-4 w-full items-center">
-      <div className="flex flex-col items-center m-10">
-        <div className="card bg-base-300 w-[30rem] shadow-xl">
-          <div className="flex flex-col card-body">
+    <div className="flex justify-center items-center min-h-screen bg-base-100 p-4">
+      <div className="w-full max-w-3xl">
+        <div className="card bg-base-300 shadow-xl p-6 md:p-10">
           <ToastContainer />
-            <h2 className="card-title mb-12 text-4xl self-center">
-              Edit Profile
-            </h2>
+          <h2 className="card-title text-4xl mb-8 text-center">Edit Profile</h2>
+
+          <div className="flex flex-col items-center mb-6">
             <img
               src={photoUrl || "default_image_url"}
-              className=" rounded-full w-40 h-40 self-center p-4"
+              className="rounded-full w-32 h-32 object-cover mb-4"
               alt="Display"
             />
-            <h1>Display Photo</h1>
             <input
               type="text"
+              placeholder="Image URL"
               value={photoUrl}
               onChange={(e) => setPhotoUrl(e.target.value)}
-              className="input input-primary w-full max-w-xs mb-4"
+              className="input input-primary w-full md:w-1/2"
             />
-            <h1>First Name</h1>
-            <input
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className="input input-primary w-full max-w-xs mb-4"
-            />
-            <h1>Last Name</h1>
-            <input
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              className="input input-bordered input-primary w-full max-w-xs"
-            />
-            <h1>Age</h1>
-            <input
-              type="text"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-              className="input input-primary w-full max-w-xs mb-4"
-            />
-            <h1>Gender</h1>
-            <input
-              type="text"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              className="input input-primary w-full max-w-xs mb-4"
-            />
-            <h1>About</h1>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="label">First Name</label>
+              <input
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="input input-primary w-full"
+              />
+            </div>
+
+            <div>
+              <label className="label">Last Name</label>
+              <input
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="input input-primary w-full"
+              />
+            </div>
+
+            <div>
+              <label className="label">Age</label>
+              <input
+                type="number"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                className="input input-primary w-full"
+              />
+            </div>
+
+            <div>
+              <label className="label">Gender</label>
+              <select
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                className="select select-primary w-full"
+              >
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <label className="label">About</label>
             <textarea
-              className="w-full h-[10rem] bg-base-200 p-2"
+              className="textarea textarea-primary w-full h-32"
               value={about}
               onChange={(e) => setAbout(e.target.value)}
-            ></textarea>
-            <h1>Skills</h1>
+            />
+          </div>
+
+          <div className="mt-6">
+            <label className="label">Skills</label>
             <input
               type="text"
+              placeholder="e.g., JavaScript, React, Node.js"
               value={skills}
               onChange={(e) => setSkills(e.target.value)}
-              className="input input-primary w-full max-w-xs mb-4"
+              className="input input-primary w-full"
             />
-            <div className="card-actions flex flex-col justify-end items-end">
-              <button className="btn btn-success m-2" onClick={handleUpdate}>
-                Save
-              </button>
-            </div>
+          </div>
+
+          <div className="flex justify-end mt-8">
+            <button className="btn btn-success" onClick={handleUpdate}>
+              Save
+            </button>
           </div>
         </div>
       </div>
