@@ -28,7 +28,7 @@ profileRouter.patch("/profile/edit", authMiddleware, async (req, res) => {
         success: false,
         message: "Invalid data",
       });
-    }
+    };
     const user = req.user;
     await user.updateOne({
         ...req.body
