@@ -39,12 +39,13 @@ const EditProfileForm = () => {
         withCredentials: true,
       });
 
-      toast.success("Profile updated successfully !");
       setTimeout(() => {
         dispatch(addUser(res.data.user));
+        toast.success("Profile updated successfully !");
         return navigate("/");
       }, 2000);
     } catch (err) {
+      toast.error("something went wrong");
       console.log(err);
     }
   };
@@ -54,6 +55,7 @@ const EditProfileForm = () => {
       <div className="flex flex-col items-center m-10">
         <div className="card bg-base-300 w-[30rem] shadow-xl">
           <div className="flex flex-col card-body">
+          <ToastContainer />
             <h2 className="card-title mb-12 text-4xl self-center">
               Edit Profile
             </h2>
@@ -114,7 +116,6 @@ const EditProfileForm = () => {
               <button className="btn btn-success m-2" onClick={handleUpdate}>
                 Save
               </button>
-              <ToastContainer />
             </div>
           </div>
         </div>
