@@ -32,12 +32,15 @@ const EditProfileForm = () => {
   }, [user]);
 
   const handleUpdate = async () => {
-    const data = { firstName, lastName, age, gender, about, skills, photoUrl };
 
     try {
-      const res = await axios.patch(BASE_URL + "/profile/edit", data, {
-        withCredentials: true,
-      });
+      const res = await axios.patch(
+        BASE_URL + "/profile/edit",
+        { firstName, lastName, age, gender, about, skills, photoUrl },
+        {
+          withCredentials: true,
+        }
+      );
 
       setTimeout(() => {
         dispatch(addUser(res.data.user));
