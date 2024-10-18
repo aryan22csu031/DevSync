@@ -9,11 +9,12 @@ const userRouter = require("./routes/userRoutes");
 
 const app = express();
 const port = process.env.PORT || 3000;
-app.use(cors({
+const corsOptions = {
   origin: "https://devsync-frontend.onrender.com",
   credentials: true,
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
-}));
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
