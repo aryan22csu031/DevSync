@@ -7,6 +7,7 @@ const profileRouter = require("./routes/profileRoutes");
 const requestRouter = require("./routes/requestRoutes");
 const userRouter = require("./routes/userRoutes");
 const path = require("path");
+require("dotenv").config();
 
 const _dirname = path.resolve();
 
@@ -29,16 +30,7 @@ app.use(express.static(path.join(_dirname, "/frontend/dist")));
 app.get("*", (req,res) => {
   res.sendFile(path.join(_dirname, "/frontend/dist/index.html"));
 })
-
-connect_db()
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .then(() => {
-    app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
-    });
-  })
-  .catch((err) => {
-    console.log("Failed to connect to MongoDB", err);
-  });
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+  connect_db();
+})
