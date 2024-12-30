@@ -1,1 +1,1 @@
-export const BASE_URL = "https://devsync-backend-qi13.onrender.com";
+export const BASE_URL = "http://localhost:3000";

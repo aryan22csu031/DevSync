@@ -6,11 +6,14 @@ const authRouter = require("./routes/authRoutes");
 const profileRouter = require("./routes/profileRoutes");
 const requestRouter = require("./routes/requestRoutes");
 const userRouter = require("./routes/userRoutes");
+const path = require("path");
+
+const _dirname = path.resolve();
 
 const app = express();
 const port = process.env.PORT || 3000;
 const corsOptions = {
-  origin: "https://devsync-frontend.onrender.com",
+  origin: "http://localhost:5173",
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 };
@@ -22,6 +25,10 @@ app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
+app.use(express.static(path.join(_dirname, "/frontend/dist")));
+app.get("*", (req,res) => {
+  res.sendFile(path.join(_dirname, "/frontend/dist/index.html"));
+})
 
 connect_db()
   .then(() => {
